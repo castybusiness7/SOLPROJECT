@@ -12,6 +12,18 @@
   /* ---------- config ---------- */
   $$('[data-x]').forEach(function (a) { if (C.x) { a.href = C.x; a.hidden = false; } });
   $$('[data-app]').forEach(function (a) { if (C.app) { a.href = C.app; a.target = '_blank'; a.rel = 'noopener'; } });
+  /* CA bar on top: "coming soon" until config.contract is filled */
+  var tb = $('topbar');
+  if (C.contract) {
+    $('tb-ca').textContent = C.contract;
+    var tc = $('tb-copy'); tc.hidden = false;
+    tc.onclick = function () {
+      (navigator.clipboard ? navigator.clipboard.writeText(C.contract) : Promise.reject()).then(function () { tc.textContent = 'Copied'; }, function () { tc.textContent = 'Copy failed'; });
+      setTimeout(function () { tc.textContent = 'Copy'; }, 1600);
+    };
+    if (C.trade) { var tt = $('tb-trade'); tt.href = C.trade; tt.hidden = false; }
+    $('tb-note').remove();
+  } else tb.classList.add('soon');
   if (C.contract) {
     $('ca-v').textContent = C.contract;
     var cp = $('ca-copy'); cp.hidden = false;
